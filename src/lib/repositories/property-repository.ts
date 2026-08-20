@@ -5,21 +5,31 @@ import { rowToProperty, type PropertyRow } from "@/lib/admin/property-mapper";
 
 const RESULTS_PER_PAGE = 12;
 
-/** Every listing the admin dashboard has published — the single source of truth for the public site too. */
+/**
+ * Every listing the admin dashboard has published — the single source of
+ * truth for the public site too. Never throws: a misconfigured or
+ * unreachable Supabase project should degrade to an empty listing set
+ * rather than take down page builds/renders across the whole site.
+ */
 async function fetchAllProperties(): Promise<Property[]> {
-  const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("properties")
-    .select("*")
-    .order("added_at", { ascending: false })
-    .returns<PropertyRow[]>();
+  try {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("properties")
+      .select("*")
+      .order("added_at", { ascending: false })
+      .returns<PropertyRow[]>();
 
-  if (error) {
-    console.error("Failed to load properties from Supabase:", error.message);
+    if (error) {
+      console.error("Failed to load properties from Supabase:", error.message);
+      return [];
+    }
+
+    return (data ?? []).map(rowToProperty);
+  } catch (e) {
+    console.error("Failed to load properties from Supabase:", e instanceof Error ? e.message : e);
     return [];
   }
-
-  return (data ?? []).map(rowToProperty);
 }
 
 export async function getAllProperties(): Promise<Property[]> {
