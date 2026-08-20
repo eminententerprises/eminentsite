@@ -30,7 +30,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Metadata
   { path: "/terms", priority: 0.2, changeFrequency: "yearly" },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = CONTACT.websiteHref;
   const now = new Date();
 
@@ -41,7 +41,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 
-  const propertyEntries: MetadataRoute.Sitemap = getAllProperties().map((p) => ({
+  const properties = await getAllProperties();
+  const propertyEntries: MetadataRoute.Sitemap = properties.map((p) => ({
     url: `${base}/properties/${p.slug}`,
     lastModified: new Date(p.addedAt),
     changeFrequency: "weekly",

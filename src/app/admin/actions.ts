@@ -10,6 +10,15 @@ export interface ActionResult {
   error?: string;
 }
 
+/** The public site reads the same `properties` table — keep it in sync with every admin write. */
+function revalidatePublicListings() {
+  revalidatePath("/", "page");
+  revalidatePath("/properties", "page");
+  revalidatePath("/properties/[slug]", "page");
+  revalidatePath("/areas/[slug]", "page");
+  revalidatePath("/services/[slug]", "page");
+}
+
 async function requireAdmin() {
   const supabase = await createClient();
   const {
@@ -36,6 +45,7 @@ export async function createProperty(values: PropertyFormValues): Promise<Action
 
   revalidatePath("/admin/properties");
   revalidatePath("/admin");
+  revalidatePublicListings();
   return { success: true };
 }
 
@@ -56,6 +66,7 @@ export async function updateProperty(id: string, values: PropertyFormValues): Pr
 
   revalidatePath("/admin/properties");
   revalidatePath("/admin");
+  revalidatePublicListings();
   return { success: true };
 }
 
@@ -70,5 +81,6 @@ export async function deleteProperty(id: string): Promise<ActionResult> {
 
   revalidatePath("/admin/properties");
   revalidatePath("/admin");
+  revalidatePublicListings();
   return { success: true };
 }

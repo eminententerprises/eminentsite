@@ -1,32 +1,53 @@
 import type { FilterState, Property } from "@/types";
-import { PROPERTIES } from "@/data/properties";
 import { toSqFt } from "@/lib/area";
+import { createPublicClient } from "@/lib/supabase/public";
+import { rowToProperty, type PropertyRow } from "@/lib/admin/property-mapper";
 
 const RESULTS_PER_PAGE = 12;
 
-export function getAllProperties(): Property[] {
-  return PROPERTIES;
+/** Every listing the admin dashboard has published — the single source of truth for the public site too. */
+async function fetchAllProperties(): Promise<Property[]> {
+  const supabase = createPublicClient();
+  const { data, error } = await supabase
+    .from("properties")
+    .select("*")
+    .order("added_at", { ascending: false })
+    .returns<PropertyRow[]>();
+
+  if (error) {
+    console.error("Failed to load properties from Supabase:", error.message);
+    return [];
+  }
+
+  return (data ?? []).map(rowToProperty);
 }
 
-export function getPropertyBySlug(slug: string): Property | undefined {
-  return PROPERTIES.find((p) => p.slug === slug);
+export async function getAllProperties(): Promise<Property[]> {
+  return fetchAllProperties();
 }
 
-export function getFeaturedProperties(limit?: number): Property[] {
-  const featured = PROPERTIES.filter((p) => p.isFeatured);
+export async function getPropertyBySlug(slug: string): Promise<Property | undefined> {
+  const properties = await fetchAllProperties();
+  return properties.find((p) => p.slug === slug);
+}
+
+export async function getFeaturedProperties(limit?: number): Promise<Property[]> {
+  const properties = await fetchAllProperties();
+  const featured = properties.filter((p) => p.isFeatured);
   return typeof limit === "number" ? featured.slice(0, limit) : featured;
 }
 
 /** Same category and city as the given property, excluding itself. */
-export function getSimilarProperties(property: Property, limit = 4): Property[] {
-  const similar = PROPERTIES.filter(
+export async function getSimilarProperties(property: Property, limit = 4): Promise<Property[]> {
+  const properties = await fetchAllProperties();
+  const similar = properties.filter(
     (p) => p.id !== property.id && p.category === property.category && p.location.city === property.location.city
   );
   return similar.slice(0, limit);
 }
 
-export function searchProperties(filters: FilterState): { results: Property[]; total: number } {
-  let results = PROPERTIES.slice();
+export async function searchProperties(filters: FilterState): Promise<{ results: Property[]; total: number }> {
+  let results = await fetchAllProperties();
 
   if (filters.purpose) {
     results = results.filter((p) => p.purpose === filters.purpose);

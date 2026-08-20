@@ -44,7 +44,7 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
   const detail = SERVICE_DETAILS[service.slug];
   const reason = REASON_BY_SLUG[service.slug];
   const showListings = service.slug === "property-sale-purchase";
-  const featured = showListings ? getFeaturedProperties(3) : [];
+  const featured = showListings ? await getFeaturedProperties(3) : [];
   const whatsappHref = buildWhatsAppLink(whatsAppServiceMessage({ title: service.name }));
 
   return (

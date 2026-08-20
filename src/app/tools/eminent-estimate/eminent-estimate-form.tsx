@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import type { AreaUnit, CityKey, PropertyType, ValuationInput } from "@/types";
+import { useEffect, useState } from "react";
+import type { AreaUnit, CityKey, Property, PropertyType, ValuationInput } from "@/types";
 import { CITY_LABELS, LOCATIONS, getLocationBySlug } from "@/data/locations";
-import { searchProperties } from "@/lib/repositories/property-repository";
+import { filtersToParams } from "@/lib/property-filters-url";
 import { estimateValuation } from "@/lib/valuation";
 import { AREA_UNIT_LABEL } from "@/lib/area";
 import { formatPKR, formatPKRRange } from "@/lib/format-pkr";
@@ -104,11 +104,32 @@ export function EminentEstimateForm() {
     : null;
 
   const result = submitted && valuationInput ? estimateValuation(valuationInput) : null;
-  const comparables =
-    result && valuationInput
-      ? searchProperties({ areas: [result.comparableAreaSlug], types: [valuationInput.propertyType] }).results.slice(0, 6)
-      : [];
   const comparableLocationName = result ? getLocationBySlug(result.comparableAreaSlug)?.name ?? city : undefined;
+
+  const [comparables, setComparables] = useState<Property[]>([]);
+
+  useEffect(() => {
+    // `submitted` never reverts to false once set, so `result` never goes
+    // from populated back to null within a session — nothing to reset here.
+    if (!result || !valuationInput) return;
+
+    const params = filtersToParams({ areas: [result.comparableAreaSlug], types: [valuationInput.propertyType] });
+    let cancelled = false;
+
+    fetch(`/api/properties/search?${params.toString()}`)
+      .then((res) => res.json())
+      .then((data: { results: Property[] }) => {
+        if (!cancelled) setComparables(data.results.slice(0, 6));
+      })
+      .catch(() => {
+        if (!cancelled) setComparables([]);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result?.comparableAreaSlug, valuationInput?.propertyType]);
 
   return (
     <div>

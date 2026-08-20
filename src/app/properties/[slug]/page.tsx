@@ -25,13 +25,14 @@ import { formatPKR } from "@/lib/format-pkr";
 import { CONTACT } from "@/config/site";
 import { PropertyImage } from "@/components/media/property-image";
 
-export function generateStaticParams() {
-  return getAllProperties().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const properties = await getAllProperties();
+  return properties.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlug(slug);
   if (!property) return { title: "Property Not Found" };
 
   const description = property.description.slice(0, 155);
@@ -48,11 +49,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlug(slug);
   if (!property) notFound();
 
   const agent = getAgentById(property.agentId);
-  const similar = getSimilarProperties(property, 4);
+  const similar = await getSimilarProperties(property, 4);
   const highlights = getPropertyHighlights(property);
   const location = getLocationBySlug(property.location.areaSlug);
   const areaAverage = location?.basePricePerMarla;

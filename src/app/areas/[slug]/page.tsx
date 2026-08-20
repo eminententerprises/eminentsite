@@ -29,7 +29,7 @@ export default async function AreaGuideDetailPage({ params }: { params: Promise<
   const guide = getAreaGuideBySlug(slug);
   if (!guide) notFound();
 
-  const { results: listings } = searchProperties({ areas: [slug], page: 1 });
+  const { results: listings } = await searchProperties({ areas: [slug], page: 1 });
 
   return (
     <div>

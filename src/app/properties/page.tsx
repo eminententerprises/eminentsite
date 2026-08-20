@@ -25,7 +25,7 @@ export default async function PropertiesPage({
 }) {
   const resolvedParams = await searchParams;
   const filters = parseFilters(resolvedParams);
-  const { results, total } = searchProperties(filters);
+  const { results, total } = await searchProperties(filters);
 
   const activeFilterCount =
     (filters.types?.length ?? 0) +

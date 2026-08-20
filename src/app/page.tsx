@@ -47,35 +47,37 @@ const PATHWAYS = [
   { label: "Build with Buraq", href: "/construction", icon: HardHat },
 ];
 
-export default function HomePage() {
-  const featuredProperties = getFeaturedProperties(8);
+export default async function HomePage() {
+  const featuredProperties = await getFeaturedProperties(8);
   const featuredProjects = getFeaturedConstructionProjects(3);
   const articles = getAllArticles().slice(0, 3);
 
-  const areaMapPoints: AreaMapPoint[] = LOCATIONS.filter(
-    (l): l is typeof l & { city: "islamabad" | "rawalpindi" } => l.city === "islamabad" || l.city === "rawalpindi",
-  ).map((l) => {
-    const buySearch = searchProperties({ areas: [l.slug], purpose: "buy" });
-    const rentSearch = searchProperties({ areas: [l.slug], purpose: "rent" });
-    const buyCover = buySearch.results[0]?.images[0];
-    const rentCover = rentSearch.results[0]?.images[0];
+  const areaMapPoints: AreaMapPoint[] = await Promise.all(
+    LOCATIONS.filter(
+      (l): l is typeof l & { city: "islamabad" | "rawalpindi" } => l.city === "islamabad" || l.city === "rawalpindi",
+    ).map(async (l) => {
+      const buySearch = await searchProperties({ areas: [l.slug], purpose: "buy" });
+      const rentSearch = await searchProperties({ areas: [l.slug], purpose: "rent" });
+      const buyCover = buySearch.results[0]?.images[0];
+      const rentCover = rentSearch.results[0]?.images[0];
 
-    return {
-      slug: l.slug,
-      name: l.name,
-      city: l.city,
-      cityLabel: l.cityLabel,
-      lat: l.coords.lat,
-      lng: l.coords.lng,
-      buyPricePerMarla: l.basePricePerMarla,
-      buyListingCount: buySearch.total,
-      rentPricePerMarla: estimateMonthlyRentPerMarla(l.basePricePerMarla),
-      rentListingCount: rentSearch.total,
-      buyImage: buyCover ? { src: buyCover.src, alt: buyCover.alt } : undefined,
-      rentImage: rentCover ? { src: rentCover.src, alt: rentCover.alt } : undefined,
-      fallbackImage: { src: `https://picsum.photos/seed/areaguide-${l.slug}/600/400`, alt: `${l.name}, ${l.cityLabel}` },
-    };
-  });
+      return {
+        slug: l.slug,
+        name: l.name,
+        city: l.city,
+        cityLabel: l.cityLabel,
+        lat: l.coords.lat,
+        lng: l.coords.lng,
+        buyPricePerMarla: l.basePricePerMarla,
+        buyListingCount: buySearch.total,
+        rentPricePerMarla: estimateMonthlyRentPerMarla(l.basePricePerMarla),
+        rentListingCount: rentSearch.total,
+        buyImage: buyCover ? { src: buyCover.src, alt: buyCover.alt } : undefined,
+        rentImage: rentCover ? { src: rentCover.src, alt: rentCover.alt } : undefined,
+        fallbackImage: { src: `https://picsum.photos/seed/areaguide-${l.slug}/600/400`, alt: `${l.name}, ${l.cityLabel}` },
+      };
+    }),
+  );
 
   return (
     <div>
