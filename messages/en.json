@@ -1,0 +1,41 @@
+{
+  "nav": {
+    "properties": "Properties",
+    "buy": "Buy",
+    "rent": "Rent",
+    "newProjects": "New Projects",
+    "services": "Services",
+    "projects": "Projects",
+    "construction": "Construction",
+    "areas": "Area Guides",
+    "insights": "Insights",
+    "more": "More",
+    "overseas": "Overseas Pakistanis",
+    "about": "About",
+    "contact": "Contact",
+    "shortlist": "Shortlist",
+    "compare": "Compare",
+    "searchProperties": "Search Properties"
+  },
+  "common": {
+    "sendEnquiry": "Send Enquiry",
+    "whatsappNow": "WhatsApp Now",
+    "callNow": "Call Now",
+    "viewDetails": "View Details",
+    "loadMore": "Load More Properties",
+    "clearAll": "Clear all",
+    "noResults": "No properties match these filters"
+  },
+  "home": {
+    "heroHeadline": "YOUR PROPERTY. OUR EXPERTISE. LASTING VALUE.",
+    "groupHeadline": "YOUR PROPERTY. OUR CRAFT. LASTING VALUE.",
+    "groupBody": "One trusted name, two areas of excellence — real estate advisory and construction craftsmanship, working together to build properties of lasting value."
+  },
+  "footer": {
+    "office": "Office",
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "hours": "Office Hours",
+    "allRightsReserved": "All rights reserved."
+  }
+}
