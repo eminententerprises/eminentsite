@@ -4,10 +4,18 @@ import type { BrandKey } from "@/config/site";
 import { CONTACT, EMINENT, BURAQ } from "@/config/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
 
+function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.79c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.45-4.94 8.45-9.94z" />
+    </svg>
+  );
+}
+
 function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
-      <path d="M16.6 5.82a4.28 4.28 0 0 1-3.14-1.4V15.2a5.4 5.4 0 1 1-4.68-5.35v2.6a2.8 2.8 0 1 0 1.97 2.68V2h2.55a4.28 4.28 0 0 0 3.9 4.24z" />
+      <path d="M16.6 5.82c-1.01-.98-1.56-2.32-1.56-3.72h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V8.75c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.32 1.38V7.3c-1.31 0-2.51-.55-3.36-1.48z" />
     </svg>
   );
 }
@@ -46,6 +54,15 @@ export function Footer({ brand }: { brand: BrandKey }) {
             <p className="font-display text-heading-lg uppercase text-navy-800">{isBuraq ? BURAQ.name : EMINENT.name}</p>
             <p className="mt-2 text-body-sm text-ink-secondary">{isBuraq ? BURAQ.positioning : EMINENT.boilerplate}</p>
             <div className="mt-4 flex gap-2">
+              <a
+                href={CONTACT.facebook.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border-hairline text-ink-secondary transition-colors hover:border-accent-strong hover:text-accent-strong"
+              >
+                <FacebookIcon className="h-4 w-4" />
+              </a>
               <a
                 href={CONTACT.instagram.href}
                 target="_blank"

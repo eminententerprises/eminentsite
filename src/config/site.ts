@@ -15,7 +15,8 @@ export const CONTACT = {
   officeAddress: "Office # 1 & 16, Mezzanine Floor, Moscow Plaza, Blue Area, Islamabad",
   officeCoords: { lat: 33.7101, lng: 73.0672 }, // Blue Area, Islamabad — approximate
   tiktok: { handle: "@eminententerprises0", href: "https://www.tiktok.com/@eminententerprises0" },
-  instagram: { handle: "@emin.enterprises", href: "https://www.instagram.com/emin.enterprises" },
+  instagram: { handle: "@eminent_pak", href: "https://www.instagram.com/eminent_pak" },
+  facebook: { handle: "Eminent Enterprises", href: "https://www.facebook.com/share/1Yhym1PDoU/" },
   serviceRegion: "Islamabad, Rawalpindi (twin cities) and scenic hill regions (Murree, Galiyat, Nathia Gali, Ayubia)",
   officeHours: "Monday – Saturday, 10:00 AM – 7:00 PM",
 } as const;

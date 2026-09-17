@@ -104,6 +104,9 @@ export default function ContactPage() {
             </Button>
 
             <div className="mt-5 flex items-center gap-4 border-t border-border-hairline pt-5">
+              <a href={CONTACT.facebook.href} target="_blank" rel="noopener noreferrer" className="text-body-sm font-semibold uppercase tracking-wide text-ink-secondary hover:text-accent-strong">
+                Facebook
+              </a>
               <a href={CONTACT.instagram.href} target="_blank" rel="noopener noreferrer" className="text-body-sm font-semibold uppercase tracking-wide text-ink-secondary hover:text-accent-strong">
                 Instagram
               </a>
