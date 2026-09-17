@@ -7,9 +7,9 @@
 export const CONTACT = {
   phone: "+92 51 8770820",
   phoneHref: "tel:+925188770820",
-  mobile: "0314-0955919",
-  mobileIntl: "+92 314 0955919",
-  whatsappNumber: "923140955919", // wa.me format, no leading +/0
+  mobile: "0311-5949244",
+  mobileIntl: "+92 311 5949244",
+  whatsappNumber: "923115949244", // wa.me format, no leading +/0
   website: "www.eminentpak.com",
   websiteHref: "https://www.eminentpak.com",
   officeAddress: "Office # 1 & 16, Mezzanine Floor, Moscow Plaza, Blue Area, Islamabad",
