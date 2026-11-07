@@ -13,8 +13,6 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     ".scratch/**",
-    // Expo app — has its own tsconfig/lint setup.
-    "mobile/**",
   ]),
 ]);
 
