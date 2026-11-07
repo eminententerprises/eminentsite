@@ -192,3 +192,13 @@ export const NAV = {
 } as const;
 
 export type BrandKey = "eminent" | "buraq";
+
+/**
+ * Mobile app store links. Leave `playStoreUrl` empty until the app is live on
+ * Google Play: the "Get the app" badges then show as "Coming soon" and aren't
+ * clickable. Paste the Play Store URL here to turn every badge into a live link.
+ */
+export const APP = {
+  name: "Eminent Enterprises",
+  playStoreUrl: "" as string,
+} as const;

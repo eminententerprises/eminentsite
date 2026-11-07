@@ -3,6 +3,7 @@ import { Phone, MessageCircle } from "lucide-react";
 import type { BrandKey } from "@/config/site";
 import { CONTACT, EMINENT, BURAQ } from "@/config/site";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { PlayStoreBadge } from "@/components/shared/app-download";
 
 function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -98,6 +99,11 @@ export function Footer({ brand }: { brand: BrandKey }) {
                 <Phone className="h-4 w-4" />
               </a>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <p className="text-label font-semibold uppercase tracking-widest text-ink-muted">Get the App</p>
+            <PlayStoreBadge height={48} className="-ml-2" />
           </div>
 
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-2.5 lg:max-w-lg">

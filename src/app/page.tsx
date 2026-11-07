@@ -31,6 +31,7 @@ import { Marquee } from "@/components/shared/marquee";
 import { AreaPriceMap, type AreaMapPoint } from "@/components/home/area-price-map";
 import { CardMarquee } from "@/components/shared/card-marquee";
 import { buildWhatsAppLink } from "@/lib/whatsapp";
+import { AppDownloadSection } from "@/components/shared/app-download";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -398,6 +399,11 @@ export default async function HomePage() {
       </SectionReveal>
 
       <SurveyLine className="mx-auto my-2 max-w-[1440px] px-4 sm:px-6" />
+
+      {/* GET THE APP */}
+      <SectionReveal>
+        <AppDownloadSection />
+      </SectionReveal>
 
       {/* CLOSING CTA */}
       <SectionReveal>
