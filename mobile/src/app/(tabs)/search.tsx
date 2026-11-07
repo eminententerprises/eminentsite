@@ -10,7 +10,7 @@ import { useFilters } from "@/state/filters";
 import { Button, EmptyState, Text } from "@/components/ui";
 import { Segmented, SelectField } from "@/components/form";
 import { PropertyCard } from "@/components/cards";
-import { FocusStatusBar } from "@/components/layout";
+import { FocusStatusBar, useTabInset } from "@/components/layout";
 import { colors, fonts, GUTTER, palette, radius, space } from "@/theme";
 
 const PAGE = 12;
@@ -25,6 +25,7 @@ const SORT_OPTIONS: { value: NonNullable<FilterState["sort"]>; label: string }[]
 
 export default function SearchScreen() {
   const insets = useSafeAreaInsets();
+  const tabInset = useTabInset();
   const { properties, loading, error, refresh, refreshing } = useProperties();
   const { filters, patchFilters } = useFilters();
   const [keyword, setKeyword] = useState(filters.keyword ?? "");
@@ -127,7 +128,7 @@ export default function SearchScreen() {
         <FlatList
           data={results.slice(0, visible)}
           keyExtractor={(p) => p.id}
-          contentContainerStyle={{ padding: GUTTER, gap: space.lg, paddingBottom: space.huge }}
+          contentContainerStyle={{ padding: GUTTER, gap: space.lg, paddingBottom: tabInset + space.lg }}
           onEndReached={loadMore}
           onEndReachedThreshold={0.6}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => refresh()} tintColor={colors.accent} colors={[colors.accent]} />}

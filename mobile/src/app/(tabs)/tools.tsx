@@ -3,7 +3,7 @@ import { router, type Href } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BrickWall, Calculator, Gauge, HardHat, Ruler } from "lucide-react-native";
 import { NAV } from "@/config/site";
-import { Card, IconTile, ListRow, Text, type Icon } from "@/components/ui";
+import { Card, IconTile, ListRow, PressableCard, Text, type Icon } from "@/components/ui";
 import { FocusStatusBar, Screen } from "@/components/layout";
 import { colors, GUTTER, palette, space } from "@/theme";
 
@@ -38,7 +38,7 @@ export default function ToolsScreen() {
 
         {/* Featured tool */}
         <View style={{ paddingHorizontal: GUTTER, marginTop: space.xl }}>
-          <Card style={{ flexDirection: "row", gap: space.lg, alignItems: "center", backgroundColor: palette.navy800, borderColor: palette.navy800 }}>
+          <PressableCard onPress={() => router.push("/tools/estimate")} accessibilityLabel="Start Eminent Estimate" style={{ flexDirection: "row", gap: space.lg, alignItems: "center", backgroundColor: palette.navy800, borderColor: palette.navy800, padding: space.lg }}>
             <IconTile icon={Gauge} size={56} />
             <View style={{ flex: 1, gap: 4 }}>
               <Text variant="headingLg" color={palette.paper}>
@@ -47,11 +47,11 @@ export default function ToolsScreen() {
               <Text variant="bodySm" color={colors.inkInvertedMuted}>
                 What's my property worth? Get an instant indicative range in five quick steps.
               </Text>
-              <Text variant="label" color={palette.iris300} style={{ marginTop: 6 }} onPress={() => router.push("/tools/estimate")}>
+              <Text variant="label" color={palette.iris300} style={{ marginTop: 6 }}>
                 Start estimate →
               </Text>
             </View>
-          </Card>
+          </PressableCard>
         </View>
 
         {groups.map((g) => (

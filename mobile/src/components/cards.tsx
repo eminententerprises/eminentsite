@@ -5,10 +5,11 @@ import { Bath, BedDouble, GitCompareArrows, Heart, MapPin, Maximize, ShieldCheck
 import type { Article, ConstructionProject, Project, Property } from "@/types";
 import { Badge, PressableCard, Text } from "@/components/ui";
 import { RemoteImage } from "@/components/layout";
+import { Glass } from "@/components/glass";
 import { formatPKR, formatPKRRange } from "@/lib/format-pkr";
 import { formatAreaAuto } from "@/lib/area";
 import { useSaved } from "@/state/saved";
-import { colors, fonts, gradients, palette, radius, shadows, space } from "@/theme";
+import { colors, fonts, gradients, palette, radius, space } from "@/theme";
 
 /* ------------------------------------------------------------ Property card */
 
@@ -30,14 +31,15 @@ function RoundIconButton({ active, onPress, label, kind }: { active: boolean; on
       accessibilityState={{ selected: active }}
       onPress={onPress}
       hitSlop={6}
-      style={[styles.roundBtn, active && kind === "compare" && { backgroundColor: colors.accent }]}
     >
+      <Glass radius={18} intensity={70} style={[styles.roundBtn, active && kind === "compare" && { backgroundColor: colors.accent }]}>
       <IconCmp
         size={17}
         color={active ? (kind === "heart" ? colors.danger : palette.paper) : palette.navy800}
         fill={active && kind === "heart" ? colors.danger : "transparent"}
         strokeWidth={2.2}
       />
+      </Glass>
     </Pressable>
   );
 }
@@ -214,15 +216,7 @@ export function CaseStudyCard({ project, style }: { project: ConstructionProject
 const styles = StyleSheet.create({
   badgeRow: { position: "absolute", top: 12, left: 12, flexDirection: "row", gap: 6, flexWrap: "wrap", right: 60 },
   actionCol: { position: "absolute", top: 12, right: 12, gap: 8 },
-  roundBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.95)",
-    alignItems: "center",
-    justifyContent: "center",
-    ...shadows.card,
-  },
+  roundBtn: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
   typeOnImage: { position: "absolute", left: 14, bottom: 10, fontSize: 11.5, letterSpacing: 0.6, textTransform: "uppercase" },
   specRow: {
     flexDirection: "row",

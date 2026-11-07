@@ -31,6 +31,7 @@ import { Button, IconCircle, IconTile, Kicker, PressableCard, SectionHeader, Sur
 import { Segmented } from "@/components/form";
 import { FocusStatusBar, RemoteImage, Screen } from "@/components/layout";
 import { ArticleCard, CaseStudyCard, PropertyCard } from "@/components/cards";
+import { Glass } from "@/components/glass";
 import type { Purpose } from "@/types";
 import { colors, fonts, GUTTER, gradients, palette, radius, shadows, space } from "@/theme";
 
@@ -107,7 +108,7 @@ export default function HomeScreen() {
             </Text>
 
             {/* Glass search panel */}
-            <View style={styles.searchPanel}>
+            <Glass tone="dark" radius={radius.xxl} intensity={50} style={styles.searchPanel}>
               <Segmented
                 dark
                 value={purpose}
@@ -131,7 +132,7 @@ export default function HomeScreen() {
                 />
               </View>
               <Button label="Search Properties" icon={Search} onPress={() => runSearch({ purpose, keyword })} fullWidth />
-            </View>
+            </Glass>
           </View>
         </View>
 
@@ -431,15 +432,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.25)",
   },
-  searchPanel: {
-    marginTop: space.xxl,
-    padding: space.lg,
-    gap: space.md,
-    borderRadius: radius.xxl,
-    backgroundColor: "rgba(16,28,61,0.55)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.18)",
-  },
+  searchPanel: { marginTop: space.xxl, padding: space.lg, gap: space.md },
   searchInput: {
     flexDirection: "row",
     alignItems: "center",

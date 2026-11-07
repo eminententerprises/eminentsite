@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { RefreshControl, ScrollView, StyleSheet, View, type StyleProp, type ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Image, type ImageProps } from "expo-image";
@@ -9,7 +9,15 @@ import { useIsFocused } from "expo-router";
 import { Kicker, Text, Button } from "@/components/ui";
 import { resolveImageSrc } from "@/lib/image";
 import { callNumber, openWhatsApp } from "@/lib/links";
+import { Glass } from "@/components/glass";
 import { colors, GUTTER, gradients, palette, space } from "@/theme";
+
+/** Bottom space taken by the floating tab bar; 0 outside the tabs. */
+export const TabInsetContext = createContext(0);
+
+export function useTabInset() {
+  return useContext(TabInsetContext);
+}
 
 /** Scrollable page body with consistent gutters and safe bottom padding. */
 export function Screen({
@@ -32,12 +40,13 @@ export function Screen({
   extraBottom?: number;
 }) {
   const insets = useSafeAreaInsets();
+  const tabInset = useTabInset();
   return (
     <ScrollView
       style={[{ flex: 1, backgroundColor: colors.surfaceBase }, style]}
       contentContainerStyle={[
         padded && { paddingHorizontal: GUTTER, paddingTop: space.xl },
-        { paddingBottom: (bottomInset ? insets.bottom : 0) + space.huge + extraBottom },
+        { paddingBottom: tabInset ? tabInset + space.lg + extraBottom : (bottomInset ? insets.bottom : 0) + space.huge + extraBottom },
         contentStyle,
       ]}
       keyboardShouldPersistTaps="handled"
@@ -125,16 +134,18 @@ export function RemoteImage({ src, style, contentFit = "cover", ...rest }: Omit<
 export function ContactBar({ whatsappMessage, phone, primary }: { whatsappMessage: string; phone?: string; primary?: ReactNode }) {
   const insets = useSafeAreaInsets();
   return (
-    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, space.md) }]}>
+    <View style={[styles.bar, { bottom: Math.max(insets.bottom, space.sm) + space.sm }]} pointerEvents="box-none">
+      <Glass radius={32} intensity={80} style={styles.barInner}>
       {primary ?? (
         <Button label="Call" icon={Phone} variant="outline" onPress={() => callNumber(phone)} style={{ flex: 1 }} fullWidth />
       )}
-      <Button label="WhatsApp" icon={MessageCircle} variant="whatsapp" onPress={() => openWhatsApp(whatsappMessage)} style={{ flex: 1 }} fullWidth />
+        <Button label="WhatsApp" icon={MessageCircle} variant="whatsapp" onPress={() => openWhatsApp(whatsappMessage)} style={{ flex: 1 }} fullWidth />
+      </Glass>
     </View>
   );
 }
 
-export const CONTACT_BAR_HEIGHT = 80;
+export const CONTACT_BAR_HEIGHT = 96;
 
 /** Status bar style that only applies while this screen is focused (tabs stay mounted). */
 export function FocusStatusBar({ style }: { style: "light" | "dark" }) {
@@ -143,17 +154,6 @@ export function FocusStatusBar({ style }: { style: "light" | "dark" }) {
 }
 
 const styles = StyleSheet.create({
-  bar: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: "row",
-    gap: space.md,
-    paddingHorizontal: GUTTER,
-    paddingTop: space.md,
-    backgroundColor: "rgba(255,255,255,0.97)",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: colors.borderHairline,
-  },
+  bar: { position: "absolute", left: space.lg, right: space.lg },
+  barInner: { flexDirection: "row", gap: space.sm, padding: space.sm },
 });

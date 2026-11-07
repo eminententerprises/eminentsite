@@ -35,6 +35,7 @@ import { Badge, Button, Card, EmptyState, KeyValue, SectionHeader, SurveyLine, T
 import { CONTACT_BAR_HEIGHT, ContactBar, FocusStatusBar, RemoteImage, Screen } from "@/components/layout";
 import { PriceText, PropertyCard } from "@/components/cards";
 import { Gallery } from "@/components/gallery";
+import { Glass } from "@/components/glass";
 import { AreaConverter } from "@/components/area-converter";
 import { colors, fonts, GUTTER, palette, radius, shadows, space } from "@/theme";
 
@@ -315,21 +316,31 @@ export default function PropertyDetailScreen() {
 
       {/* Floating top buttons over the gallery */}
       <View style={[styles.topBar, { top: insets.top + space.sm }]} pointerEvents="box-none">
-        <Pressable onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))} style={styles.fab} accessibilityLabel="Go back">
+        <GlassFab onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))} label="Go back">
           <ArrowLeft size={20} color={palette.navy800} />
-        </Pressable>
+        </GlassFab>
         <View style={{ flexDirection: "row", gap: space.sm }}>
-          <Pressable onPress={() => shareLink(p.title, `/properties/${p.slug}`)} style={styles.fab} accessibilityLabel="Share listing">
+          <GlassFab onPress={() => shareLink(p.title, `/properties/${p.slug}`)} label="Share listing">
             <Share2 size={19} color={palette.navy800} />
-          </Pressable>
-          <Pressable onPress={() => toggleShortlist(p.id)} style={styles.fab} accessibilityLabel={saved ? "Remove from saved" : "Save property"}>
+          </GlassFab>
+          <GlassFab onPress={() => toggleShortlist(p.id)} label={saved ? "Remove from saved" : "Save property"}>
             <Heart size={19} color={saved ? colors.danger : palette.navy800} fill={saved ? colors.danger : "transparent"} />
-          </Pressable>
+          </GlassFab>
         </View>
       </View>
 
       <ContactBar whatsappMessage={whatsAppEnquiryMessage({ ref: p.ref, title: p.title })} />
     </View>
+  );
+}
+
+function GlassFab({ onPress, label, children }: { onPress: () => void; label: string; children: React.ReactNode }) {
+  return (
+    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={label} hitSlop={4} style={({ pressed }) => ({ transform: [{ scale: pressed ? 0.94 : 1 }] })}>
+      <Glass radius={22} intensity={70} style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
+        {children}
+      </Glass>
+    </Pressable>
   );
 }
 

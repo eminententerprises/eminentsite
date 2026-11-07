@@ -8,11 +8,12 @@ import { useProperties } from "@/state/properties";
 import { openWhatsApp } from "@/lib/links";
 import { Button, EmptyState, Text } from "@/components/ui";
 import { PropertyCard } from "@/components/cards";
-import { FocusStatusBar } from "@/components/layout";
+import { FocusStatusBar, useTabInset } from "@/components/layout";
 import { colors, fonts, GUTTER, palette, radius, space } from "@/theme";
 
 export default function SavedScreen() {
   const insets = useSafeAreaInsets();
+  const tabInset = useTabInset();
   const { shortlist, compare, clearShortlist } = useSaved();
   const { getById, loading } = useProperties();
 
@@ -66,7 +67,7 @@ export default function SavedScreen() {
       <FlatList
         data={saved}
         keyExtractor={(p) => p.id}
-        contentContainerStyle={{ padding: GUTTER, gap: space.lg, paddingBottom: space.huge, flexGrow: 1 }}
+        contentContainerStyle={{ padding: GUTTER, gap: space.lg, paddingBottom: tabInset + space.lg, flexGrow: 1 }}
         renderItem={({ item }) => <PropertyCard property={item} />}
         ListFooterComponent={
           saved.length > 0 ? (
